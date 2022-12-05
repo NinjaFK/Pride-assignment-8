@@ -1,11 +1,16 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include "prideImp.cpp"
 
 int main()
 {
-    std::string one = "ab";
-    std::string two = "abc";
-
-    std::cout << (one < two) << '\n';
+    DoublyLinkedList<std::string> DLL;
+    DLL.insert("ge");
+    DLL.insert("ge");
+    DLL.insert("gg");
+    DLL.print(); // should do ge -> ge -> gg
+    DLL.backwardsPrint();
+    readData(DLL);
     return 0;
 }
