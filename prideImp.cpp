@@ -5,6 +5,7 @@
     Output: Sorted pronouns
 */
 #include <iostream>
+#include <fstream>
 
 template <class type>
 class DoublyLinkedList
@@ -12,8 +13,8 @@ class DoublyLinkedList
     struct node
     {
         type data;
-        int *next;
-        int *prev;
+        node *next;
+        node *prev;
     };
 
 public:
@@ -29,13 +30,25 @@ private:
     node *tail;
 };
 
-void readData();
+template <class type>
+void readData(DoublyLinkedList<type>);
 
 template <class type>
 DoublyLinkedList<type>::DoublyLinkedList()
 {
     head = nullptr;
     tail = nullptr;
+}
+
+template <class type>
+DoublyLinkedList<type>::~DoublyLinkedList()
+{
+    while (head->next != nullptr)
+    {
+        head = head->next;
+        delete head->prev;
+    }
+    delete head;
 }
 
 template <class type>
@@ -57,10 +70,10 @@ void DoublyLinkedList<type>::insert(type pass)
             this->head = temp;
         }
         // if end
-        else if (pass > this->tail->data)
+        else if ((pass > this->tail->data) || (pass == this->tail->data))
         {
             temp->prev = this->tail;
-            this->tail = temp;
+            this->tail->next = temp;
             this->tail = temp;
         }
         // middle
@@ -86,11 +99,54 @@ void DoublyLinkedList<type>::insert(type pass)
 template <class type>
 void DoublyLinkedList<type>::print()
 {
+    node *temp = this->head;
+    while (temp != nullptr)
+    {
+        std::cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    std::cout << ".\n";
 }
 
 template <class type>
 void DoublyLinkedList<type>::backwardsPrint()
 {
+    node *temp = this->tail;
+    while (temp != nullptr)
+    {
+        std::cout << temp->data << " -> ";
+        temp = temp->prev;
+    }
+    std::cout << ".\n";
+}
+
+template <class type>
+void readData(DoublyLinkedList<type> read)
+{
+    type item;
+    std::ifstream infile("pronouns.txt");
+    DoublyLinkedList<type>::node *temp = this->head;
+    if (this->head != nullptr)
+    {
+        while (temp->next != nullptr)
+        {
+            infile >> item;
+            temp->data = item;
+            temp = temp->next;
+        }
+        infile >> item;
+        temp->data = item;
+    }
+    infile >> item;
+    while (item != "Source:")
+    {
+        temp->next = new node;
+        temp->next->prev = temp;
+        temp->next->data = item;
+        temp = temp->next;
+        infile >> item;
+    }
+    temp->next = nullptr;
 }
 
 template <class type>
