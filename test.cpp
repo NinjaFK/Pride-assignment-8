@@ -6,11 +6,7 @@
 int main()
 {
     DoublyLinkedList<std::string> DLL;
-    DLL.insert("ge");
-    DLL.insert("ge");
-    DLL.insert("gg");
-    DLL.print(); // should do ge -> ge -> gg
-    DLL.backwardsPrint();
     readData(DLL);
+    DLL.print();
     return 0;
 }
