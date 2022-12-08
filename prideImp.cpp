@@ -10,6 +10,8 @@
 template <class type>
 class DoublyLinkedList
 {
+
+public:
     struct node
     {
         type data;
@@ -17,7 +19,6 @@ class DoublyLinkedList
         node *prev;
     };
 
-public:
     DoublyLinkedList();
     ~DoublyLinkedList();
     void insert(type);
@@ -25,13 +26,12 @@ public:
     void print();
     void backwardsPrint();
 
-private:
     node *head;
     node *tail;
 };
 
 template <class type>
-void readData(DoublyLinkedList<type>);
+void readData(DoublyLinkedList<type> &);
 
 template <class type>
 DoublyLinkedList<type>::DoublyLinkedList()
@@ -43,12 +43,15 @@ DoublyLinkedList<type>::DoublyLinkedList()
 template <class type>
 DoublyLinkedList<type>::~DoublyLinkedList()
 {
-    while (head->next != nullptr)
+    if (head != nullptr)
     {
-        head = head->next;
-        delete head->prev;
+        while (head->next != nullptr)
+        {
+            head = head->next;
+            delete head->prev;
+        }
+        delete head;
     }
-    delete head;
 }
 
 template <class type>
@@ -60,7 +63,7 @@ void DoublyLinkedList<type>::insert(type pass)
     temp->next = nullptr;
     temp->prev = nullptr;
 
-    if (head != nullptr)
+    if (this->head != nullptr)
     {
         // if before
         if (pass < this->head->data)
@@ -121,35 +124,43 @@ void DoublyLinkedList<type>::backwardsPrint()
 }
 
 template <class type>
-void readData(DoublyLinkedList<type> read)
+void readData(DoublyLinkedList<type> &read)
 {
     type item;
     std::ifstream infile("pronouns.txt");
-    DoublyLinkedList<type>::node *temp = this->head;
-    if (this->head != nullptr)
-    {
-        while (temp->next != nullptr)
-        {
-            infile >> item;
-            temp->data = item;
-            temp = temp->next;
-        }
-        infile >> item;
-        temp->data = item;
-    }
     infile >> item;
     while (item != "Source:")
     {
-        temp->next = new node;
-        temp->next->prev = temp;
-        temp->next->data = item;
-        temp = temp->next;
+        read.insert(item);
         infile >> item;
     }
-    temp->next = nullptr;
+    infile.close();
 }
 
 template <class type>
 bool DoublyLinkedList<type>::searchDelete(type del)
 {
+    node *temp = this->head;
+    while (temp != nullptr)
+    {
+        // if null or one
+        if (this->head == nullptr || this->head == nullptr)
+        {
+            delete head;
+            head = nullptr;
+        }
+        // if head
+        if (this->head->data == del)
+        {
+        }
+        // if tail
+        else if (this->tail->data == del)
+        {
+        }
+        // else middle
+        else
+        {
+        }
+        temp = temp->next;
+    }
 }
